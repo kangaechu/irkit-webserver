@@ -5,21 +5,28 @@ import (
 	"log"
 	"net/http"
 	"os/exec"
+	"time"
 )
 
 func main() {
+	srv := &http.Server{
+		Addr:        ":9090",
+		Handler:     http.DefaultServeMux,
+		ReadTimeout: 10 * time.Second,
+	}
 	http.HandleFunc("/", usage)
 	http.HandleFunc("/aircon/on", powerOnAircon)
 	http.HandleFunc("/aircon/off", powerOffAircon)
 	http.HandleFunc("/ceiling/full", fullCeiling)
 	http.HandleFunc("/ceiling/on", powerOnCeiling)
 	http.HandleFunc("/ceiling/off", powerOffCeiling)
-	err := http.ListenAndServe(":9090", nil)
+
+	err := srv.ListenAndServe()
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
-func usage(w http.ResponseWriter, r *http.Request) {
+func usage(w http.ResponseWriter, _ *http.Request) {
 	usage := "usage:\n" +
 		"/aircon/on : power on aircon\n" +
 		"/aircon/off : power off aircon\n"
@@ -30,7 +37,7 @@ func usage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func powerOnAircon(w http.ResponseWriter, r *http.Request) {
+func powerOnAircon(w http.ResponseWriter, _ *http.Request) {
 	out, err := exec.Command("/home/pi/bin/irkit/aircon_on.sh").Output()
 	fmt.Println(string(out))
 	if err != nil {
@@ -39,7 +46,7 @@ func powerOnAircon(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func powerOffAircon(w http.ResponseWriter, r *http.Request) {
+func powerOffAircon(w http.ResponseWriter, _ *http.Request) {
 	out, err := exec.Command("/home/pi/bin/irkit/aircon_off.sh").Output()
 	fmt.Println(string(out))
 	if err != nil {
@@ -48,7 +55,7 @@ func powerOffAircon(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func fullCeiling(w http.ResponseWriter, r *http.Request) {
+func fullCeiling(w http.ResponseWriter, _ *http.Request) {
 	out, err := exec.Command("/home/pi/bin/irkit/ceiling_full.sh").Output()
 	fmt.Println(string(out))
 	if err != nil {
@@ -57,7 +64,7 @@ func fullCeiling(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func powerOnCeiling(w http.ResponseWriter, r *http.Request) {
+func powerOnCeiling(w http.ResponseWriter, _ *http.Request) {
 	out, err := exec.Command("/home/pi/bin/irkit/ceiling_on.sh").Output()
 	fmt.Println(string(out))
 	if err != nil {
@@ -66,7 +73,7 @@ func powerOnCeiling(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func powerOffCeiling(w http.ResponseWriter, r *http.Request) {
+func powerOffCeiling(w http.ResponseWriter, _ *http.Request) {
 	out, err := exec.Command("/home/pi/bin/irkit/ceiling_off.sh").Output()
 	fmt.Println(string(out))
 	if err != nil {

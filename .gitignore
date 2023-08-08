@@ -22,5 +22,5 @@
 
 # End of https://www.gitignore.io/api/go
 
-irkit-server
+irkit-webserver
 dist/
