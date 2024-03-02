@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/sh
+
+set -eou pipefail
 
 curl -i "http://192.168.1.117/messages" \
   -H "X-Requested-With: curl" \
