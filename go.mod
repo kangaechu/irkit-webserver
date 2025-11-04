@@ -1,3 +1,3 @@
 module github.com/kangaechu/irkit-webserver
 
-go 1.22
+go 1.25.3
