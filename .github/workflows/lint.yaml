@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 5
     steps:
     - uses: actions/checkout@v7.0.0
-    - uses: actions/setup-go@v6.5.0
+    - uses: actions/setup-go@v7.1.0
       with:
         go-version: stable
     - name: golangci-lint
